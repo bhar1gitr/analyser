@@ -1,0 +1,58 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Data Fetcher</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        #result {
+            margin-top: 20px;
+            white-space: pre;
+        }
+    </style>
+</head>
+<body>
+    <h1>YouTube Data Fetcher</h1>
+    <label for="youtubeAccount">Select YouTube Account:</label>
+    <select id="youtubeAccount" name="youtubeAccount">
+        <!-- Add YouTube account options here -->
+        <option value="UCByrGPZ7ZdE9kas7goN1p-Q">Channel 1</option>
+        <option value="UCByrGPZ7ZdE9kas7goN1p-Q">Channel 2</option>
+        <!-- Add more options as needed -->
+    </select>
+    <button onclick="fetchYouTubeData()">Fetch Data</button>
+    <div id="result"></div>
+
+    <script>
+        function fetchYouTubeData() {
+            const selectedAccount = document.getElementById('youtubeAccount').value;
+
+            // Replace 'YOUR_API_KEY' with your actual YouTube Data API key
+            const apiKey = 'AIzaSyBxvf1tDK26vnPZGMtrZr8UkqL6wX-h3yw';
+
+            const apiUrl = `https://www.googleapis.com/youtube/v3/channels?part=statistics&id=${selectedAccount}&key=${apiKey}`;
+
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    const statistics = data.items[0].statistics;
+                    const resultText = `
+                        Likes: ${statistics.likeCount}
+                        Subscribers: ${statistics.subscriberCount}
+                        Views: ${statistics.viewCount}
+                    `;
+                    document.getElementById('result').innerText = resultText;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('result').innerText = 'Error fetching data';
+                });
+        }
+    </script>
+</body>
+</html>
